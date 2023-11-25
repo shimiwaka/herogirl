@@ -1,7 +1,10 @@
 package main
 
 import (
+	"bytes"
+	"image"
 	"image/color"
+	_ "image/png"
 	"log"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -39,6 +42,27 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	switch g.State {
 	case mainMenu:
 		screen.Fill(color.White)
+		img, _, err := image.Decode(bytes.NewReader(startButtonImg))
+		if err != nil {
+			log.Fatal(err)
+		}
+		startButton := ebiten.NewImageFromImage(img)
+
+		op := &ebiten.DrawImageOptions{}
+		op.GeoM.Translate(screenX/2-float64(img.Bounds().Dx()/2), screenY/2)
+		op.Filter = ebiten.FilterLinear
+		screen.DrawImage(startButton, op)
+
+		img, _, err = image.Decode(bytes.NewReader(usageButtonImg))
+		if err != nil {
+			log.Fatal(err)
+		}
+		usageButton := ebiten.NewImageFromImage(img)
+
+		op = &ebiten.DrawImageOptions{}
+		op.GeoM.Translate(screenX/2-float64(img.Bounds().Dx()/2), screenY/2+float64(img.Bounds().Dy()*2))
+		op.Filter = ebiten.FilterLinear
+		screen.DrawImage(usageButton, op)
 	}
 }
 
