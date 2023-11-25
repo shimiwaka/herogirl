@@ -1,6 +1,7 @@
 package main
 
 import (
+	"image/color"
 	"log"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -11,6 +12,13 @@ type GameState int
 type Game struct {
 	State GameState
 }
+
+const (
+	mainMenu GameState = iota
+	gameMain
+	gameOver
+	gameClear
+)
 
 const (
 	gameTitle = "ヒーローガールスカイパンチ"
@@ -28,6 +36,10 @@ func (g *Game) Update() error {
 }
 
 func (g *Game) Draw(screen *ebiten.Image) {
+	switch g.State {
+	case mainMenu:
+		screen.Fill(color.White)
+	}
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeight int) {
